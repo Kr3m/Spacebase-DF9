@@ -1,0 +1,127 @@
+Interested in contributing to the open source Spacebase DF9 project, but
+not sure where to start?
+
+Here's some areas that will be easy to start making contributions to:
+
+
+== Linecodes ==
+
+All of the text strings shown in the game are gathered into the
+Linecodes file, which is located here:
+
+  Data/Dialog/Linecodes/MainGame_enUS.lua
+
+You can add new random terms, new phrases for the crew's Spaceface logs,
+improved inventory descriptions, and so on.  Use the Galactopedia.txt
+for ideas too.
+
+
+== Translating Linecodes ==
+
+The reason the Linecodes are all broken out separately is to permit
+translation of them into other languages.  Have a shot at making a
+custom translation by copying the file from:
+
+  Data/Dialog/Linecodes/MainGame_enUS.lua
+
+to, say:
+
+  Data/Dialog/Linecodes/MainGame_esES.lua
+
+and then work on getting all the strings translated to your language.
+Note that names, jargon, and other stuff may be better left in English,
+but use your judgment.
+
+
+
+== New Events ==
+
+See events_howto.txt for a tutorial on adding new immigration and
+hostile events.
+
+
+== Decorative Inventory Items ==
+
+These are the random clutter that the crew picks up and displays on
+shelves.  These are in Data/Scripts/InventoryData.lua
+
+To add an item, you need a name, a graphic (for sPortraitSprite), a
+short description, and some tags to influence the item's desireability.
+
+
+== Hint Checks ==
+
+These are the tips that pop up under certain conditions.  The conditions
+are coded up in the HintChecks.lua file; they're fairly straightforward
+for the most part, but they tie in functionality throughout the rest of
+the game.
+
+Are there hints you think are annoying, that could be toned back?  Or
+new ones that are needed based on recent changes to the game?  Adding
+hints can be an easy introduction to the codebase.
+
+
+== Concept Sketches ==
+
+If 3D art isn't an aptitude but you're good at drawing, then an easy way
+to contribute is via mockup sketches.  Scan them in and add them under
+media_src.  Charactg
+
+
+== Establish a Blender Models Repository ==
+
+In order to assure that Spacebase DF9 is Free and maintainable for the
+long run, we want to replace all of the DoubleFine artwork with our own
+under CC-BY-SA + CPAL licensed work.  That'll be a lot of work - that's
+the bad news.
+
+The good news is, with Blender being an open source application there
+are already tons of models available on the web, provided under open
+source licensing terms.  So even if you're not an artist, you can help
+in the art side of things by going on a hunt for items that
+look relevant to the game.  Add to the model collection in media_src.
+
+If you are competent in Blender and would rather make new work, that's
+great.  Essentially, anything visible in the game that doesn't have a
+corresponding *.blend file in media_src is fair game!  Also, if you
+think you can improve on one of the *.blend files already in media_src,
+please do have a shot.  One of the reasons we're collecting the .blend
+files is to enable collective collaboration on the art, since there is
+much to do.
+
+
+== Saved Games Test Repository ==
+
+Create and collect saved game files for various conditions that would be
+useful for testing purposes.  E.g. a saved game from right before the
+Final Event, one from when a security team is just about to enter a
+derelict, etc.
+
+For developers it can be tedious to play through a game to get it to
+just the right conditions for testing their changes, so having a
+repository of saved games will simplify that.
+
+For testers, these also may serve as shortcuts to validating that all
+the major aspects of the game can be easily tested before a new release.
+
+Note that these will likely need to be recreated periodically if we
+introduce non-backwards compatible changes to the saved game file.
+Hopefully that won't be too frequent though.
+
+
+== Document Functions ==
+
+DoubleFine didn't include a Fine Manual with their code release!  So as
+you study some functions to learn how they work, add a sentence or two
+comment in the code prior to the function explaining what it does, to
+make life easier for the next new coder in the project.
+
+
+== Advocacy ==
+
+Spread the word about our efforts with Spacebase DF9.  This can involve
+writing articles about our development work, finding publications
+interested in running articles about us, or even direct fundraising
+activities.
+
+

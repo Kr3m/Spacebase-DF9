@@ -1,0 +1,73 @@
+== Completed ==
+O2 Generator - Gen 3 (Released in v1.07)
+O2 Generator - Gen 4 (Released in v1.07)
+Power Generator - Gen 3 (Released in v1.07)
+Power Generator - Gen 4 (Released in v1.07)
+Icon: Janitor (Scheduled for v1.08)
+
+
+== Ready To Go - Art Done; Coding Needed ==
+Tentacle Plant
+Wall Bio Generator
+
+
+== High Priority - Art Needed; Code Done ==
+Icon: Debug
+Icon: Squad - For main menu. See wikipedia "Squad": Square with X and
+      two dots above. 
+Icon: Replacements for all of the job and menu icons
+Replacements for existing art
+  - floor tile art
+  - wall art
+  - O2 recycler
+  - Research console
+  - Beds
+  - Shelving
+  - etc.
+
+== Medium Priority - Roadmap Planned Items ==
+House Plant Gen 2
+Locker
+THE THING - Full 3D Rig & Animation Required
+Plasma Cannon - Full 3D Rig & Animation Required
+Gravity Gun - Full 3D Rig & Animation Required
+Walls Graphics
+
+
+== Low Priority ==
+Meat Plant (HydroP)
+Spice Plant (HydroP)
+More pickup curios - E.g. trophy, toy rocket, action figures, toy
+     trains, picture frames, stuffed animals, paperbacks, rubics cube,
+     pill jars, whiskey bottles, board games, funny hats, sports
+     memorabilia, flowers, candy boxes, etc.
+Litter
+Trash cans
+Gibs
+Vermin - E.g. Space weevil from red dwarf, bugs, fungus, rats, etc.
+
+== Wishlist - Random Ideas ==
+Blast Doors
+Shield generator - Repels meteor strikes
+Hangar Door
+Hangar Pad
+Murderslugs
+Space Worms
+Trap: Laser Grid
+Trap: Stun Net
+Trap: Sleeping Gas
+Trap: Automated Sentry Gun - Like in Aliens, "UA 571"
+Asteroid: Ship Debris
+Asteroid: Ice Chunks
+Asteroid: Organics
+Asteroid: Metalic
+Asteroid: Crystaline
+Tanks (Various Sizes/Shapes) - For fuel, water, etc.
+Robots
+Shooting range targets - For security to practice on
+Docking Adapters
+Thrusters
+Flamethrower
+Weapon art
+
+

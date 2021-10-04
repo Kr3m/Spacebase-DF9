@@ -1,0 +1,204 @@
+New Events Architecture
+-----------------------
+
+Instead of having a hierarchy of Event sub-classes, each essentially
+it's own thing, we define an Event as just a set of EventActions.  An
+event proceeds by executing a sequence of EventActions, with each
+subsequent action determined by game state, player choice, or weighted
+random selection.
+
+The EventAction class is a base class from which myriad subclasses
+provide specific functionality - a meteor storm, a discussion in a
+dialog, flying a spacecraft onto the game screen, a menu of choices for
+the player, etc.  Depending on how an EventAction unfolds, it can lead
+directly to another specific EventAction, or branch to one of several
+possible subsequent EventActions, or finalize the Event.
+
+In other words, we change Event from being a class hierarchy into being
+a container of EventActions:
+
+class Event:
+    string   name
+    int      weight
+    table    requirements
+    table    actions
+    table    state
+
+    function init()
+    function tick()
+    function save()
+
+The weight parameter is simply a base frequency weighting to control how
+frequently the event should fire compared with other possible events.
+
+The requirements table is used to track various criteria that must be
+satisfied for the event to be considered.  E.g. the minimum population,
+maximum game time, pre-requisite events that have already concluded,
+various tallies, etc.  Whether this table is a simple list of
+[parameter,value] pairs or is something fancier like a function table,
+is TBD.
+
+The actions table is a lookup table of EventAction derived objects, with
+rows being [id, EventAction].  When the Event fires off, the first
+EventAction in the list is triggered.  The EventAction base class itself
+is defined as:
+
+class EventAction:
+    string   type
+    boolean  active
+    boolean  completed
+    double   duration
+
+    function init()
+    function generate(eventState)
+    function tick()
+    function save()
+    function restore()
+    function results()
+
+This is a pure virtual base class for defining the interface for event
+actions; we won't actually insert literal EventAction objects into the
+Event.
+
+generate() is intended to be called when the previous EventAction(s)
+are finished, and this event action is the next one to be executed.
+This routine will conduct any random determinations, calculate initial
+state of any objects involved, load up graphics assets, perform any
+procedural generation, and so forth.
+
+tick() advances the game through the event action, and returns true
+while the action remains valid and needs more tick calls.  For instance,
+each call to this routine might advance a ship through space, cycle an
+animation, or operate a user interface dialog.  When the event action
+has run to completion, tick() will return false.
+
+save() and restore() are used to persist the event actions' state, such
+that exiting and restarting the game will result in the action picking
+up exactly where it left off.
+
+The results() routine is to be called only after tick() is complete
+(i.e. it has returned false).  This routine returns a table of changes
+to apply to the owning Event's state table.  This might involve
+incrementing/decrementing tallies, appending Character id's to an
+adversaries list, switching on boolean properties, or adding notes to an
+event history log, for examples.
+
+# TODO: I'm not sure if results() should return a table which we process
+# externally, or if we should have results() actually do the processing
+# and insert/modify the data items itself.  The former lets us
+# centralize the logic and do the alterations externally to the child
+# classes; the latter might be more straightforward to implement and
+# maintain.  Hmm.
+
+Most importantly, results() should specify which follow-on EventActions
+will execute next.  If no EventActions are included in the return, then
+the Event is considered finished.  If more than one EventAction is
+returned, they will all be run in parallel.  However each EventAction in
+an Event runs only once.  Thus if you want the possibility for, say, two
+meteor showers, you need to put two MeteorShowerEventAction's in the
+owning Event's action table with distinct id's; or else create a
+MultiMeteorShowerEventAction class and use that.
+
+
+== Specific Event Action Subclasses ==
+
+(Each of the following would be a separate Lua file under
+Data/Scripts/GameEvents/Actions/.)
+
+AfflictWithMalady - applies a malady to
+characters identified as part of the event.  This encompases
+Event._preRollMalady() functionality.
+
+IdentifyBreechPoint - Selects a spot in the base to attach a breech ship
+to.  Namely, a floor location inside a safe room.  This encompases much
+of the functionality of BreachingEvent.preExecuteSetup().
+
+IdentifyFreeSpacePoint - Selects a spot outside the base in open space.
+See Event._getTileInOpenSpace().
+
+IdentifyDockingPoint - Selects a wall tile in the base where a docking
+bridge could be attached.  See Event._attemptDock() and
+Event._verifyDock().
+
+FlyBreachShip - Advances a ship along a vector towards a destination
+point under the space station.  This encompases the 'flyIn'
+functionality in BreachingEvent.tick().
+
+FlyBreachAway - Flies the breaching ship from the station offscreen.
+
+FlySpacebusShip - Flies the spacebus along a vector towards a
+destination point near the space station.  This encompases the
+bSpawn/bStartedSpawn functionality in ImmigrationEvent.tick()
+
+FlySpacebusAway - Moves the spacebus off screen.  See 'flyAway' phase in
+ImmigrationEvent.tick().
+
+# TODO: The above Fly*Ship and Fly*Away routines can probably be merged
+# into single general purpose FlyShip and FlyAway routines.
+
+CutHoleInHull - Drills into a station from underneath the flooring.
+See the 'drill' phase code in BreachingEvent.tick().
+
+RaiseLadder - Animates showing a ladder in a breech hole.  See 'ladder'
+phase code in BreachingEvent.tick().
+
+GenerateCharacters - Creates principle Characters.  See
+ImmigrationEvent.onQueue().
+
+InsertCharacters - Adds the Event's principle Characters to the game
+map.
+
+# TODO: Should there be distinct event actions for spawning raiders and
+# other adversaries, separate from immigrants, or just use the Event
+# state to determine what types of characters to make?
+
+GenerateDerelict - Creates a derelict ship layout.  This doesn't decide
+*where* the derelict will be placed (maybe select a preliminary target
+location?), just how it's armed, what rooms it includes, and so on.
+
+InsertDerelict - Adds the derelict ship structure to the game map.  This
+includes determining where to place it.
+
+GenerateDockingShip - Creates a docking ship layout.  This does not
+include the bridge nor does it determine placement, although it might
+select a target location.  See Docking.lua for the code this routine
+calls into.
+
+InsertDockingShip - Adds the docked ship to the game map, near to the
+station, with a docking bridge.  This includes determining where to
+place it and designing the bridge.  See Docking.lua.
+
+GenerateDataCube - See Event._getRandomDatacubeResearch()
+
+InsertDataCube - Places data cube in a derelict or docking ship.
+
+GenerateMeteorStrike - Selects the intensity and a target for the
+strike.  See MeteorEvent.getIndoorTarget()
+
+InsertMeteorStrike - Reigns down a meteor shower on the station.  See
+MeteorEvent.tick().
+
+PresentChoiceDialog - Displays a dialog with a description and buttons
+with two or more text choices for the player to select from.
+Corresponds to the first "intro" dialog in the current dialog-driven
+events.  See dialogTick() in Immigration and Compound events.
+
+# TODO: Should there be separate event actions for dialogs with
+# different numbers of buttons, or just one action for an arbitrary
+# number?
+
+PresentInformationDialog - This displays a text dialog explaining
+something to the player, with a single button to dismiss it.
+Corresponds to the second "response" dialog in the current dialog-driven
+events.
+
+PresentNotificationAlert - Displays text in the notification stream (on
+the right side of the screen).  The alert is non-interactive and moves
+on to the next EventAction after a predefined period of time.  See
+Base.eventOccurred() and DerelictEvent.tick().
+
+PresentActionAlert - Displays text in the notification stream.  Clicking
+on it will trigger one followup EventAction; ignoring it until the
+timeout occurs will result in a different EventAction.  See
+ImmigrationEvent.onAlert*() and I guess ImmigrationEvent.skipDialog().
+

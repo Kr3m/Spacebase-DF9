@@ -1,0 +1,23 @@
+{
+    "body": [
+        {
+            "text": "\nThank you for playing Spacebase DF-9 Unofficial v1.09!",
+            "y": 70
+        },
+        {
+            "text": "This is the final patch from Skenners and the team at Derelict Games.
+\nNew features include:  Bug fixes, new objects and cleaned up functionality! Its not perfect but its a hoot!",
+            "y": -50
+        },
+        {
+            "text":"",
+            "y": -240
+        }
+    ],
+    "footer": {
+        "text": ">> Spacebase Hub: For all your Spacebase DF-9 needs!",
+        "url": "http://www.spacebasehub.net",
+        "y": -370,
+        "w": 360
+    }
+}

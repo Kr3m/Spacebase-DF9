@@ -1,0 +1,84 @@
+                Spacebase Research Re-Balance
+
+Game Object             Cost    New Cost        Prereq                  Notes
+--------------------------------------------------------------------------------------------
+VaporizeLevel2		1200     1800		                        (Add +VaporizeLevel2Discovered)
+MaintenanceLevel2 	1200     2400		MaintenanceLevel2Discovered
+BuildLevel2 		1000
+PlantLevel2 		1000     1200
+LaserRifles 		1100  
+ArmorLevel2 		 900          
++ArmorLevel3              --     180                                    (Add +ArmorLevel3Discovered)
+TeamTactics 		2000	√2400		TeamTacticsDiscovered
+AirScrubber 		 750    √ 500
+OxygenRecyclerLevel2 	1000 	√1000		AirScrubber
+OxygenRecyclerLevel3	1500	√2000		OxygenRecyclerLevel2
+OxygenRecyclerLevel4 	2000	√4000		OxygenRecyclerLevel3
+GeneratorLevel2 	1000      600
+GeneratorLevel3 	1500     1800		GeneratorLevel2
+GeneratorLevel4 	2000     3600		GeneratorLevel3
+DoorLevel2 		1200    √ 900
+FridgeLevel2 		 800	√ 900		FridgeLevel2Discovered
+RefineryDropoffLevel2   1200
++RefineryDropoffLevel3    --     2400                                   (Add +RefineryDropoffLevel3Discovered)
+WallMountedTurret2      2000			WallMountedTurrentLevel2Discovered  [Not enabled?]
+
+FridgeLevel2Discovered     
+TeamTacticsDiscovered      
+MaintenanceLevel2Discovered 
+WallMountedTurretLevel2Discovered 
+
+New data cubes:
+  +VaporizeLevel2Discovered
+  +RefineryDropoffLevel3Discovered
+  +ArmorLevel3Discovered
+  (Other weapons? vibroblades?)
+
+Thoughts...
+-----------
+1. Early in the game the research tasks just take plain too long, but
+   late in the game when you have plenty of skilled scientists and
+   research stations, you quickly run out of things to research.  So as
+   a general rule, beginning research needs to be cheaper, and later
+   research needs to be more expensive.
+
+2. Player guides on the web seem to suggest the best initial upgrades to
+   be body armor, weapons, upgraded recyclers, and upgraded mineral
+   processor.  This suggests the research unit amounts for those is ok
+   balance-wise so shouldn't be fiddled with.  Everything else is
+   probably ok to make a little cheaper to make them a little more
+   attractive, or more expensive if their usefulness is more in the
+   latter portion of the game.
+
+3. The AirScrubber has a fairly modest impact on the game, and due to
+   importance of the oxygen recycler upgrades most players are going to
+   be interested in it.  So making this cheaper will not terribly impact
+   the game and will help the player feel like they're able to make
+   progress up the research tree sooner.
+
+4. Vaporize becomes useful really only when there is an excess of
+   derelicts to process, which only happens late in the game.  So we can
+   afford to make this one more expensive.
+
+5. Maintenance becomes useful later in the game when the player's
+   station is large, so it assists in scaling things up.  We can thus
+   make it more expensive since presumably the player will have research
+   going strong at this point.
+
+6. We could use a few more simple research items for the early game, in
+   the 50-200 research unit range.  Simple things that don't impact game
+   play too badly, that will make research more interesting in the early
+   part of the game.
+
+7. The number of research items is both too high (the list is
+   overwhelming for newbie players to look through), and too low
+   (experienced players can exhaust the research items they're
+   interested in getting).  With only four research topics available
+   from research cubes, after just a few derelicts you will have the
+   full set, which is kind of dull and makes derelicts too unrewarding.
+   To address these all of needs, move a few of the normal research
+   items to require data cubes, and add data cubes for a bunch more
+   research topics; strive for a healthy mix of both cheap small
+   research items and expensive powerful research items.
+
+   Recommend:

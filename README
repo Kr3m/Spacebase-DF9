@@ -1,0 +1,92 @@
+Spacebase DF-9 v2 - Space station building game
+
+This is a community maintained fork of DoubleFine's original game, which
+was open sourced May 12, 2015 under the Common Public Attribution
+License (CPAL-1.0: http://opensource.org/licenses/cpal_1.0).  (See
+Licensing History below for more discussion).
+
+ 
+Installation
+============
+Linux: 
+
+ $ ./packaging/linux_install.sh
+	 
+This will copy the modified game files on top of your Steam installation
+of the game (after backing it up of course!)  This assumes you let Steam
+install to its default location (i.e. under ~/.steam/).  If you need to
+override the Steam path, this can be done with the STEAM_COMMON env
+variable:
+	 
+  $ STEAM_COMMON="~/Foo/steam/steamapps/common/" ./packaging/linux_install.sh
+	 
+To restore the original game, just run:
+
+  $ ./packaging/linux_install.sh restore
+	 
+Or else just direct Steam to re-install Spacebase DF-9.  Note that save
+files won't necessarily be backwards compatible!
+
+Windows:
+
+Run the installer found on the spacebasehub.net website.
+
+Bugs
+====
+If you need to report a bug, please send us an email at
+errorlog@spacebasehub.net, including a description of what you were
+doing, your log file and a screenshot of the bug - whatever you think
+would best help us understand the problem.
+
+You can find your game log at:
+
+  Windows
+  <drive>:\Program Files (x86)\steam\steamapps\common\SpacebaseDF9\moai_log_space.txt 
+
+  Linux
+  ~/.steam/steam/steamapps/common/SpacebaseDF9/moai_log_Space.txt
+
+If you can, also attach the save game located at:
+
+  Windows
+  <drive>:\Users\<your user name>\Documents\SpacebaseDF9\saves\ 
+
+  Linux
+  ~/.local/share/doublefine/spacebasedf9/Saves/
+
+
+Code Style
+==========
+The code uses 'hungarian notation'.  For an explanation, see
+
+  http://blogs.msdn.com/b/ericlippert/archive/2003/09/12/52989.aspx
+
+We believe the meaning is:  n is Number, b is Boolean, t is Table, r is
+Reference, e is Enum.
+
+
+== Licensing History ==
+JP - Sept 17, 2014
+    We’re also pleased to announce we’ll be releasing the game’s full
+    Lua source code a short time after 1.0, which will allow the
+    community to create potentially far-ranging mods that add content,
+    new features, and change some fundamental game behaviors.
+
+    -- http://store.steampowered.com/news/externalpost/steam_community_announcements/521612880954244703
+
+JP - Oct 27, 2014
+    The game’s Lua source code is now available in the game’s install
+    directory on all platforms. Usually this will be in your Steam
+    directory, under SteamApps\common\SpacebaseDF9\Data\Scripts. If you
+    own the game you can modify these files and distribute your
+    modifications to other users as you like. A large portion of
+    Spacebase is written in Lua, so there are relatively few limits on
+    what you can do with this.
+
+    -- http://steamcommunity.com/games/246090/announcements/detail/216497448170557993
+
+MOTD - May 12, 2015
+    Open source license available at:
+    http://opensource.org/licenses/cpal_1.0
+
+    -- https://web.archive.org/web/20150512113236/http://blog.spacebasedf9.com/motd/motd.txt

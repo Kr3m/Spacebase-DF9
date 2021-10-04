@@ -1,0 +1,231 @@
+= How to Create Events =
+
+Events add challenge and color to Spacebase DS9.  There are several
+different types of events:
+
+  1.  Meteorite strikes - rocks rain down on your station and
+      potentially set fires.
+  2.  Breaches - a ship cuts a hole in your station and deposits some
+      raiders.
+  3.  Derelicts - a foreign base (a "derelict ship") appears some
+      distance from yours, requiring exploration.  Sometimes there are
+      inhabitants, and sometimes they're hostile!
+  4.  Docking - a foreign base (a "docking ship") connects a causeway to
+      your station.  Sometimes there are inhabitants, sometimes they're
+      hostile, and sometimes they invade your base.
+  5.  Immigrants and Raiders - a few people appear outside your base.
+      Sometimes they're peaceful and will join your base, sometimes
+      they're hostile raiders and attack.
+  6.  Compound 'final events' - these represent large assaults on your
+      base that occur late in the game.
+
+The last three types of events are preceeded with some interactive
+dialog, which allows the player some limited control over the event.
+E.g. they can choose to accept the immigrants or turn them away.
+
+The other kinds of events don't have any dialog text associated with
+them, so we'll ignore those.
+
+
+== Dialog Sets ==
+
+The file Data/Scripts/GameEvents/EventData.lua indexes the various
+dialogs that can occur.  This file categorizes them by their type:
+
+  + CompoundEvent
+  + immigrationEvents
+  + hostileImmigrationEvents
+  + dockingEvents
+    - ambiguous
+    - hostile
+    - peaceful
+
+Regardless of their category, the events are all composed of the same
+text elements:
+
+   a. title
+   b. request
+   c. accept text ('yes')
+      reject text ('no')
+   d. acceptance response and retort
+   e. rejection response A and retort
+      rejection response B and retort ("screwYou")
+
+The title is a short bit of text at the top of the dialog.  This is
+typically the name of the vessel, radio channel, person, or organization
+contacting the player, but feel free to experiment.  The key thing to
+remember is that it needs to be brief - no more than 40 characters or so
+max, and ideally more in the 20-30 range.
+
+The request is a more detailed description of the event, usually the
+verbal dialog spoken by the pilot, communications officer, or other
+individual establishing contact.
+
+You can force line breaks in the request text by writing a slash and an
+n (\n).  This adds a carriage return.  Otherwise, the game will
+automatically word-wrap lines at appropriate spots.
+
+The player is given the option of the accept or reject choices in (c);
+if they Accept then (d) fires, but if they Reject then the game will
+randomly either obey the player (response A) or ignore it (response B).
+
+Note that Compound events are a bit... different... so ignore them for
+now.
+
+If the above seems confusing, try playing the game through one event and
+refer to the corresponding text in the lua file so you can see exactly
+where each of the strings appears in the dialog.
+
+The syntax for an Event stanza looks like this:
+
+	{
+	    title='(a)', request='(b)', acceptButton='(c-1)', rejectButton='(c-2)',
+	    acceptedResponse='(d-1)', acceptedResponseButton='(d-2)',
+	    rejectedResponse='(e-A1)', rejectedResponseButton='(e-A2)',
+	    screwYouResponse='(e-B1)', screwYouResponseButton='(e-B2)',
+	},
+
+You'll notice that instead of text, the values for each of these keys is
+a code, like title='EVENT002TEXT01'.  This is because the text is loaded
+from language-specific files at runtime.
+
+To add a new immigration, raider, docking, or compound event, first find
+the highest event number in the file; your event will be the next
+consecutive number.  Cut and paste one of the existing Event stanzas and
+change the EVENT0NN number to your own.
+
+There is not fixed upper bounds on the number of events we can have.
+In naming the events EVENT0NN this assumes we may grow to several
+hundred events, but less than a thousand.
+
+
+== Dialog Strings ==
+
+The actual strings are defined in a language-specific file.  For
+English, this is the file Data/Dialog/Linecodes/MainGame_enUS.lua.
+Here's an example of one of the immigration events from that file:
+
+    EVENT002TEXT01 = { sLine = "The Bi-annual Owl", },
+    EVENT002TEXT02 = { sLine = "I'm captain of the Bi-annual Owl, the ship that made the Kessel Run in under 12 decibels.  Need to come aboard to pay some old debts.", },
+    EVENT002TEXT03 = { sLine = "Great, we could use a good pilot like you.", },
+    EVENT002TEXT04 = { sLine = "Uh, uh... negative, negative.  We've got a uh, reactor leak here now.  Large leak, very dangerous", },
+    EVENT002TEXT05 = { sLine = "I expect to be well paid. I'm in it for the money.", },
+    EVENT002TEXT06 = { sLine = "You needn't worry about your reward, laser brain.", },
+    EVENT002TEXT07 = { sLine = "On second thought, let's pass on this scruffy-looking station.", },
+    EVENT002TEXT08 = { sLine = "Who's scruffy-looking?", },
+    EVENT002TEXT09 = { sLine = "That's a good story.  I think you just can't bear to let a gorgeous guy like me onto your station.  Prepare yourself, here I come!", },
+    EVENT002TEXT10 = { sLine = "You wouldn't happen to have a price on your head, would you?", },
+
+These map to the dialog items like this:
+
+   a. title       - EVENT0NNTEXT01
+   b. request     - EVENT0NNTEXT02
+   c. accept text - EVENT0NNTEXT03
+      reject text - EVENT0NNTEXT04
+   d. acceptance response and retort  - EVENT0NNTEXT05, EVENT0NNTEXT06
+   e. rejection response A and retort - EVENT0NNTEXT07, EVENT0NNTEXT08
+      rejection response B and retort - EVENT0NNTEXT09, EVENT0NNTEXT10
+
+Not all the events use all these strings.  For instance some kinds of
+events only have rejection response A, not B.  Also, compound events
+(i.e. the 'final event') has special text handling that doesn't follow
+these rules.
+
+== Special Notes ==
+
+The events code is currently under development and is likely to change.
+Indeed, while the intent is to keep this document updated to the latest
+code, there's no particular reason why it has to be.  You may find the
+actual state of the code differs somewhat from what this document says.
+This section aims to offer some advice and tips if this proves true!
+
+You may notice some events are repeated, but with different event
+numbers.  This is to work around a limitation in the game design, where
+if events are removed then the event id's in the game save files may
+point at the invalid deleted events, and this generates errors as a
+result.  The work around we're using is since we deleted a number of
+events, to pad things out with extra copies.  This is just temporary,
+though.
+
+So, as you add new events, please try to replace one of these duplicate
+events.  Once all the dupes are gone we can resume adding new ones.
+
+
+== Testing Your Events ==
+
+Once you've finished writing up your events, it's worthwhile to test
+them out.  Currently there isn't a way to intentially queue up a
+specific event (as far as I know), so the main way to test your work is
+to play the game until the event fires.  You'll likely want to test the
+event at least twice - once with the affirmative choice, and once for
+the rejection choice.
+
+Note that the game pre-generates 3 events, and saves these cached events
+when you save the game.  So when you load up the game code after adding
+your new events, you'll need to progress through a minimum of 3 ordinary
+events before there's any chance for yours to appear.  After that it's
+just random choice until yours shows up.
+
+Once your event does fire, here's a checklist of things to look for:
+
+  * Does the word wrapping work okay?  Are any lines too long or too
+    short?  Does the text flow out of the frame?  Even if it fits, does
+    it make the dialog look crowded?
+
+  * Does the text read well?  Do the two available answers sound
+    sensible?  Do the responses to the answers sound appropriate?
+
+  * If the event is supposed to be humorous, is it actually funny?  Is
+    it still funny the second time you see it, or does the joke become
+    instantly stale?
+
+  * Are there any unintentional spelling, grammar, or punctuation
+    errors?  Exaggerated errors can be used to emphasize a speaker's
+    poor communication abilities or informality, but where errors are
+    not being done for characterization purposes you should keep to
+    proper writing.  This way the exceptions will stand out better.
+
+
+== Writing Event Text ==
+
+The above describe the mechanics, but what should you actually write?
+
+Traditionally events have taken one of three forms: Generic sci fi
+events, scifi related homages/spoofs, and in-game story.
+
+Generic events are simple and to the point, easily tuned out and
+forgotten.  Wording (and twists) should be kept to a minimum.
+
+One thing to keep in mind with homages is that no matter how enjoyable
+they'll be for fans, some proportion of our players won't have seen the
+show and won't "get it".  The best homages will be about sci fi elements
+that are known so widely that they're almost a part of our general
+culture - slave Leia, "Live Long and Prosper", chestburster aliens, and
+so forth.  General tropes that reappear throughout fiction are fair game
+too - captain's logs, loveable rogues, evil abinos, futuristic slang,
+etc.  For humor value it can be effective to 'lampshade' or 'subvert'
+cliched standards like these, by calling attention to them or by
+reversing them in some fashion.  (See
+http://tvtropes.org/pmwiki/pmwiki.php/Main/LampshadeHanging and
+http://tvtropes.org/pmwiki/pmwiki.php/Main/SubvertedTrope).
+
+Finally are events that explain the game's story or background elements,
+or that help establish or promote plotlines or gameplay elements.
+We'll hopefully have a Game Bible or story background or some such that
+you can reference for ideas.  But beyond that just study the existing
+events and game UI strings for ideas.
+
+
+== Sending in Your Work ==
+
+If you're at all familiar with using git, then the absolute best way to
+send your work in is to create a patch (or a diff) and forward that to
+the developers to review and land in the codebase trunk.  Using git is
+beyond the scope of this howto, but if you anticipate making more
+contributions it's highly recommended!
+
+If you can't or don't want to use git, then just paste the lines you
+added into an email addressed to one of the developers, and ask if
+they'd kindly integrate your event into the game.
+
+
